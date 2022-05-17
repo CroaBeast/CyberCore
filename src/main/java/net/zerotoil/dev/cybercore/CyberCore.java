@@ -87,7 +87,7 @@ public final class CyberCore {
                 placeholders[i] = "{" + placeholders[i] + "}";
 
         // Sends message
-        textUtilities.sendMessageList(sender, textUtilities.convertList(files.getConfig("lang"), "lang." + messageKey), placeholders, replacements);
+        textUtilities.sendMessageList(sender, textUtilities.convertList(files.getConfig("lang"), "messages." + messageKey), placeholders, replacements);
     }
 
 }
