@@ -26,6 +26,10 @@ public final class CyberCore {
 
     public void loadStart(String... additionalFiles) {
         settings.sendBootHeader();
+        loadFiles(additionalFiles);
+    }
+
+    public void loadFiles(String... additionalFiles) {
         files = new Files(this);
         files.load(additionalFiles);
     }
