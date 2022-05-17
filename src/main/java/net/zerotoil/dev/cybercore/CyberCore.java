@@ -38,7 +38,7 @@ public final class CyberCore {
         logger("&7Loaded " + themeColor() + plugin.getDescription().getPrefix() + " v" +
                 plugin.getDescription().getVersion() + "&7 in &a" +
                 (System.currentTimeMillis() - bootStart) + "ms&7.");
-        settings.getBootBar();
+        logger(settings.getBootBar());
     }
 
     public JavaPlugin getPlugin() {
