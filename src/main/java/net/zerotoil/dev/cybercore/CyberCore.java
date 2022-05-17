@@ -46,6 +46,9 @@ public final class CyberCore {
     public CoreSettings getSettings() {
         return settings;
     }
+    public Files files() {
+        return files;
+    }
 
     public int getMajorVersion() {
         return TextKeys.majorVersion();
