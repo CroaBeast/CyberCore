@@ -79,7 +79,9 @@ public class CoreSettings {
     }
 
     public void sendBootHeader() {
-        main.logger(getBootBar(), getStringLogo(true), getBootBar(), "");
+        main.logger(getBootBar());
+        main.logger(getArrayLogo(true));
+        main.logger(getBootBar(), "");
     }
 
     private boolean isLegacyLogo() {
