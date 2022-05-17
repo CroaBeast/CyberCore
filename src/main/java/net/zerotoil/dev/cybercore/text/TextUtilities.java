@@ -16,6 +16,11 @@ public class TextUtilities extends BeansLib {
      */
     private final JavaPlugin plugin;
 
+    private String langPrefixKey = "<p>";
+    private String langPrefix = "&8&lCCR &8» &r";
+    private boolean hardSpacing = false;
+    private boolean stripPrefix = false;
+
     public TextUtilities(JavaPlugin plugin) {
         this.plugin = plugin;
     }
@@ -29,23 +34,39 @@ public class TextUtilities extends BeansLib {
     @Override
     @NotNull
     public String langPrefixKey() {
-        return plugin.getConfig().getString("lang.prefix-key", "<key>");
+        return langPrefixKey;
+    }
+
+    public void setPrefixKey(String prefixKey) {
+        langPrefixKey = prefixKey;
     }
 
     @Override
     @NotNull
     public String langPrefix() {
-        return plugin.getConfig().getString("lang.main-prefix", " My Plugin owo");
+        return langPrefix;
+    }
+
+    public void setPrefix(String prefix) {
+        langPrefix = prefix;
     }
 
     @Override
     public boolean isHardSpacing() {
-        return plugin.getConfig().getBoolean("options.hard-spacing");
+        return hardSpacing;
+    }
+
+    public void setHardSpacing(boolean hardSpacing) {
+        this.hardSpacing = hardSpacing;
     }
 
     @Override
     public boolean isStripPrefix() {
-        return plugin.getConfig().getBoolean("options.strip-prefix");
+        return stripPrefix;
+    }
+
+    public void setStripPrefix(boolean stripPrefix) {
+        this.stripPrefix = stripPrefix;
     }
 
     public static int getJavaVersion() {
