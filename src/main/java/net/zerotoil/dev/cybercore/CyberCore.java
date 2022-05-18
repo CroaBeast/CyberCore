@@ -65,11 +65,11 @@ public final class CyberCore {
         return files;
     }
 
-    public int getMajorVersion() {
+    public static int getMajorVersion() {
         return TextKeys.majorVersion();
     }
 
-    public String getServerVersion() {
+    public static String getServerVersion() {
         return Bukkit.getBukkitVersion().split("-")[0];
     }
 
@@ -108,8 +108,8 @@ public final class CyberCore {
         textUtilities.sendMessageList(sender, textUtilities.convertList(files.getConfig("lang"), "messages." + messageKey), placeholders, replacements);
     }
 
-    public boolean restrictVersions(int minVersion, int maxVersion, String pluginPrefix, String version) {
-        if (getMajorVersion() < minVersion)
+    public static boolean restrictVersions(int minVersion, int maxVersion, String pluginPrefix, String version) {
+        if (getMajorVersion() <= minVersion)
             Bukkit.getLogger().severe(pluginPrefix + " v" + version + " does not support 1." + getMajorVersion() + ".x and older!");
         else if (getMajorVersion() > maxVersion)
             Bukkit.getLogger().severe(pluginPrefix + " v" + version + " does not support 1." + getMajorVersion() + " and newer. Please update!");
