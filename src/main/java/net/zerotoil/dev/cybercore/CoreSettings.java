@@ -1,6 +1,6 @@
 package net.zerotoil.dev.cybercore;
 
-import net.zerotoil.dev.cybercore.text.TextUtilities;
+import net.zerotoil.dev.cybercore.utilities.TextUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.bukkit.ChatColor;
 
@@ -85,7 +85,7 @@ public class CoreSettings {
     }
 
     private boolean isLegacyLogo() {
-        return SystemUtils.OS_NAME.contains("Windows") && TextUtilities.getJavaVersion() < 12;
+        return SystemUtils.OS_NAME.contains("Windows") && TextUtils.getJavaVersion() < 12;
     }
 
 }

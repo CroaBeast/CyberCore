@@ -1,4 +1,4 @@
-package net.zerotoil.dev.cybercore.text;
+package net.zerotoil.dev.cybercore.utilities;
 
 import me.croabeast.beanslib.BeansLib;
 import org.bukkit.configuration.Configuration;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TextUtilities extends BeansLib {
+public class TextUtils extends BeansLib {
 
     /*
      * You need to initialize your BeansLib class with your plugin's instance.
@@ -21,7 +21,7 @@ public class TextUtilities extends BeansLib {
     private boolean hardSpacing = false;
     private boolean stripPrefix = false;
 
-    public TextUtilities(JavaPlugin plugin) {
+    public TextUtils(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 

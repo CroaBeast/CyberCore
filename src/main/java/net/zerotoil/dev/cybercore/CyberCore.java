@@ -2,7 +2,8 @@ package net.zerotoil.dev.cybercore;
 
 import me.croabeast.beanslib.utilities.TextKeys;
 import net.zerotoil.dev.cybercore.files.Files;
-import net.zerotoil.dev.cybercore.text.TextUtilities;
+import net.zerotoil.dev.cybercore.objects.Lag;
+import net.zerotoil.dev.cybercore.utilities.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -10,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class CyberCore {
 
     private final JavaPlugin plugin;
-    private final TextUtilities textUtilities;
+    private final TextUtils textUtilities;
     private final CoreSettings settings;
 
     private final long bootStart;
@@ -19,7 +20,7 @@ public final class CyberCore {
 
     public CyberCore(JavaPlugin plugin) {
         this.plugin = plugin;
-        textUtilities = new TextUtilities(plugin);
+        textUtilities = new TextUtils(plugin);
         settings = new CoreSettings(this);
         bootStart = System.currentTimeMillis();
     }
@@ -30,12 +31,18 @@ public final class CyberCore {
 
     public void loadStart(boolean loadFiles, String... additionalFiles) {
         settings.sendBootHeader();
-        if (loadFiles) loadFiles(additionalFiles);
+        if (loadFiles) loadFiles(false, additionalFiles);
+        loadTPS();
     }
 
-    public void loadFiles(String... additionalFiles) {
+    public void loadFiles(boolean bootHeader, String... additionalFiles) {
+        if (bootHeader) settings.sendBootHeader();
         files = new Files(this);
         files.load(additionalFiles);
+    }
+
+    private void loadTPS() {
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Lag(), 100L, 1L);
     }
 
     public void loadFinish() {
@@ -48,7 +55,7 @@ public final class CyberCore {
     public JavaPlugin getPlugin() {
         return plugin;
     }
-    public TextUtilities getTextUtilities() {
+    public TextUtils getTextUtilities() {
         return textUtilities;
     }
     public CoreSettings getSettings() {
