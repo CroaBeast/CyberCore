@@ -1,11 +1,13 @@
 package net.zerotoil.dev.cybercore;
 
+import me.croabeast.beanslib.BeansLib;
 import me.croabeast.beanslib.utilities.TextKeys;
 import net.zerotoil.dev.cybercore.files.Files;
 import net.zerotoil.dev.cybercore.objects.Lag;
 import net.zerotoil.dev.cybercore.utilities.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class CyberCore {
@@ -106,6 +108,27 @@ public final class CyberCore {
 
         // Sends message
         textUtilities.sendMessageList(sender, textUtilities.convertList(files.getConfig("lang"), "messages." + messageKey), placeholders, replacements);
+    }
+
+    // With color & placeholders
+    public String getLangValue(Player player, String section, String path, String[] placeholders, String[] replacements) {
+
+        return BeansLib.replaceInsensitiveEach(getLangValue(player, section, path), placeholders, replacements);
+
+    }
+
+    // With color
+    public String getLangValue(Player player, String section, String path) {
+
+        return textUtilities.colorize(player, getLangValue(section, path));
+
+    }
+
+    // Without color
+    public String getLangValue(String section, String path) {
+
+        return files.getConfig("lang").getString(section + "." + path);
+
     }
 
     public static boolean restrictVersions(int minVersion, int maxVersion, String pluginPrefix, String version) {

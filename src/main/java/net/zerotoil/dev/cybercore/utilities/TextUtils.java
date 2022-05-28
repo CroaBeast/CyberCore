@@ -16,7 +16,7 @@ public class TextUtils extends BeansLib {
      */
     private final JavaPlugin plugin;
 
-    private String langPrefixKey = "<p>";
+    private String langPrefixKey = "{p}";
     private String langPrefix = "&8&lCCR &8» &r";
     private boolean hardSpacing = false;
     private boolean stripPrefix = false;
