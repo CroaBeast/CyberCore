@@ -111,23 +111,23 @@ public final class CyberCore {
     }
 
     // With color & placeholders
-    public String getLangValue(Player player, String section, String path, String[] placeholders, String[] replacements) {
+    public String getLangValue(Player player, String file, String path, String[] placeholders, String[] replacements) {
 
-        return BeansLib.replaceInsensitiveEach(getLangValue(player, section, path), placeholders, replacements);
+        return BeansLib.replaceInsensitiveEach(getLangValue(player, file, path), placeholders, replacements);
 
     }
 
     // With color
-    public String getLangValue(Player player, String section, String path) {
+    public String getLangValue(Player player, String file, String path) {
 
-        return textUtilities.colorize(player, getLangValue(section, path));
+        return textUtilities.colorize(player, getLangValue(file, path));
 
     }
 
     // Without color
-    public String getLangValue(String section, String path) {
+    public String getLangValue(String file, String path) {
 
-        return files.getConfig("lang").getString(section + "." + path);
+        return files.getConfig(file).getString(path);
 
     }
 
