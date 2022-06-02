@@ -47,6 +47,11 @@ public class TextUtils extends BeansLib {
         return langPrefix;
     }
 
+    @Override
+    public boolean fixColorLogger() {
+        return true;
+    }
+
     public void setPrefix(String prefix) {
         langPrefix = prefix;
     }

@@ -96,10 +96,10 @@ public final class CyberCore {
     }
 
     public void sendMessage(CommandSender sender, String messageKey) {
-        sendMessage(sender, messageKey, null, null);
+        sendMessage(sender, messageKey, null);
     }
 
-    public void sendMessage(CommandSender sender, String messageKey, String[] placeholders, String[] replacements) {
+    public void sendMessage(CommandSender sender, String messageKey, String[] placeholders, String... replacements) {
 
         // Adds brackets around placeholders
         if (placeholders != null)
