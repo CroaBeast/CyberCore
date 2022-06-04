@@ -2,6 +2,7 @@ package net.zerotoil.dev.cybercore.utilities;
 
 import me.croabeast.beanslib.BeansLib;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -85,8 +86,8 @@ public class TextUtils extends BeansLib {
         return Integer.parseInt(version);
     }
 
-    // converts message to list
-    public List<String> convertList(Configuration config, String path) {
+    @Deprecated
+    public static List<String> convertList(Configuration config, String path) {
 
         if (!config.isSet(path)) return new ArrayList<>(Arrays.asList(""));
 
@@ -97,6 +98,14 @@ public class TextUtils extends BeansLib {
         List<String> list = new ArrayList<>();
         if (!config.getString(path).contains("[Ljava.lang.String")) list.add(config.getString(path));
         return list;
+
+    }
+
+    // converts message to list
+    public static List<String> convertList(ConfigurationSection section, String path) {
+
+        if (section.isList(path)) return section.getStringList(path);
+        return Arrays.asList(section.getString(path));
 
     }
 

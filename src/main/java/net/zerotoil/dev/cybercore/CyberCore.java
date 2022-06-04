@@ -1,6 +1,5 @@
 package net.zerotoil.dev.cybercore;
 
-import me.croabeast.beanslib.BeansLib;
 import me.croabeast.beanslib.utilities.TextKeys;
 import net.zerotoil.dev.cybercore.files.Files;
 import net.zerotoil.dev.cybercore.objects.Lag;
@@ -113,7 +112,7 @@ public final class CyberCore {
     // With color & placeholders
     public String getLangValue(Player player, String file, String path, String[] placeholders, String[] replacements) {
 
-        return BeansLib.replaceInsensitiveEach(getLangValue(player, file, path), placeholders, replacements);
+        return me.croabeast.beanslib.utilities.TextUtils.replaceInsensitiveEach(getLangValue(player, file, path), placeholders, replacements);
 
     }
 
