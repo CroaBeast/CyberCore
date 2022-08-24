@@ -1,13 +1,19 @@
 package net.zerotoil.dev.cybercore;
 
 import me.croabeast.beanslib.utilities.TextKeys;
+import me.croabeast.beanslib.utilities.TextUtils;
 import net.zerotoil.dev.cybercore.files.FileManager;
 import net.zerotoil.dev.cybercore.objects.Lag;
+import net.zerotoil.dev.cybercore.utilities.GeneralUtils;
+import net.zerotoil.dev.cybercore.utilities.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
 
 public final class CyberCore {
 
@@ -196,61 +202,148 @@ public final class CyberCore {
     }
 
     /**
-     * Sends a message to specified sender
+     * Send a message to a player or console
+     * if the player is null. The player's
+     * placeholders and chat colors will be
+     * applied in the process.
      *
      * @param sender Sender to send to
-     * @param messageKey Message key in lang.yml
+     * @param messageKey Message in lang.yml
+     * @return true always
      */
-    public void sendMessage(CommandSender sender, String messageKey) {
-        sendMessage(sender, messageKey, null);
+    public boolean sendMessage(@Nullable CommandSender sender, @NotNull String messageKey) {
+        return sendMessage(sender, messageKey, null);
     }
 
     /**
-     * Sends a message to specified sender
+     * Send a message to a player or console
+     * if the player is null. The player's
+     * placeholders and chat colors will be
+     * applied in the process.
+     *
+     * Additional placeholders may be parsed
+     * if included in the placeholders field.
      *
      * @param sender Sender to send to
-     * @param messageKey Message key in lang.yml
+     * @param messageKey Message in lang.yml
      * @param placeholders Array of placeholders
-     * @param replacements Array of placeholder replacements
+     * @param replacements Array of replacements for placeholders
+     * @return true always
      */
-    public void sendMessage(CommandSender sender, String messageKey, String[] placeholders, String... replacements) {
-        sendMessage(sender, files.getConfig("lang").getConfigurationSection("messages"), messageKey, placeholders, replacements);
+    public boolean sendMessage(@Nullable CommandSender sender, @NotNull String messageKey, @Nullable String[] placeholders, @Nullable String... replacements) {
+        Player player = sender instanceof Player ? (Player) sender : null;
+        if (placeholders != null) placeholders = Arrays.copyOf(placeholders, placeholders.length);
+        if (replacements != null) replacements = Arrays.copyOf(replacements, replacements.length);
+        return sendMessage(
+                sender,
+                "lang",
+                "messages." + messageKey,
+                player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders,
+                player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
+        );
     }
 
     /**
-     * Sends a message to specified sender
+     * Send a message to a player or console
+     * if the player is null. The player's
+     * placeholders and chat colors will be
+     * applied in the process.
+     *
+     * Additional placeholders may be parsed
+     * if included in the placeholders field.
      *
      * @param sender Sender to send to
-     * @param section Config section to message get from
-     * @param messageKey Message key in lang.yml
+     * @param file YAML file in question
+     * @param path Path in YAML file
      * @param placeholders Array of placeholders
-     * @param replacements Array of placeholder replacements
+     * @param replacements Array of replacements for placeholders
+     * @return true always
      */
-    public void sendMessage(CommandSender sender, ConfigurationSection section, String messageKey, String[] placeholders, String... replacements) {
+    public boolean sendMessage(@Nullable CommandSender sender, @NotNull String file, @NotNull String path, @Nullable String[] placeholders, @Nullable String... replacements) {
+        Player player = sender instanceof Player ? (Player) sender : null;
+        if (placeholders != null) placeholders = Arrays.copyOf(placeholders, placeholders.length);
+        if (replacements != null) replacements = Arrays.copyOf(replacements, replacements.length);
 
-        // Adds brackets around placeholders
-        if (placeholders != null)
-            for (int i = 0; i < placeholders.length; i++)
-                placeholders[i] = "{" + placeholders[i] + "}";
-
-        // Sends message
-        textUtilities.sendMessageList(sender, me.croabeast.beanslib.utilities.TextUtils.toList(section, messageKey), placeholders, replacements);
+        textUtilities.sendMessageList(
+                sender,
+                TextUtils.toList(files.getConfig(file).getConfigurationSection(path), null),
+                player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders,
+                player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
+        );
+        return true;
     }
 
     /**
-     * Gets a value from a loaded yaml file with
-     * colors and placeholders parsed.
+     * Gets a message from lang.yml. The
+     * player's placeholders and chat colors
+     * will be applied in the process.
      *
-     * @param player Player in question
-     * @param file Name of file to get from
-     * @param path Path within file
+     * @param sender Sender in question
+     * @param messageKey Message in lang.yml
+     * @return true always
+     */
+    public String getMessage(@Nullable CommandSender sender, @NotNull String messageKey) {
+        return getMessage(sender, messageKey, null);
+    }
+
+    /**
+     * Gets a message from lang.yml. The
+     * player's placeholders and chat colors
+     * will be applied in the process.
+     *
+     * Additional placeholders may be parsed
+     * if included in the placeholders field.
+     *
+     * @param sender Player in question
+     * @param messageKey Message in lang.yml
+     * @param placeholders Array of placeholders
+     * @param replacements Array of replacements for placeholders
+     * @return Message from lang
+     */
+    public String getMessage(@Nullable CommandSender sender, @NotNull String messageKey, @Nullable String[] placeholders, @Nullable String... replacements) {
+        return getMessage(sender, "lang", "messages." + messageKey, placeholders, replacements);
+    }
+
+    /**
+     * Gets a message from lang.yml. The
+     * player's placeholders and chat colors
+     * will be applied in the process.
+     *
+     * Additional placeholders may be parsed
+     * if included in the placeholders field.
+     *
+     * @param sender Sender to send to
+     * @param file YAML file in question
+     * @param path Path in YAML file
+     * @param placeholders Array of placeholders
+     * @param replacements Array of replacements for placeholders
+     * @return Message from lang
+     */
+    public String getMessage(@Nullable CommandSender sender, @NotNull String file, @NotNull String path, @Nullable String[] placeholders, @Nullable String... replacements) {
+        Player player = sender instanceof Player ? (Player) sender : null;
+        return getLangValue(
+                player,
+                file,
+                path,
+                player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders,
+                player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
+        );
+    }
+
+    /**
+     * Gets a value from a loaded yaml file
+     * with colors and placeholders parsed.
+     *
+     * @param sender Sender to send to
+     * @param file YAML file in question
+     * @param path Path in YAML file
      * @param placeholders Array of placeholders
      * @param replacements Array of placeholder replacements
      * @return String within the file
      */
-    public String getLangValue(Player player, String file, String path, String[] placeholders, String[] replacements) {
+    public String getLangValue(@Nullable CommandSender sender, @NotNull String file, @NotNull String path, @Nullable String[] placeholders, @Nullable String[] replacements) {
 
-        return me.croabeast.beanslib.utilities.TextUtils.replaceInsensitiveEach(getLangValue(player, file, path), placeholders, replacements);
+        return me.croabeast.beanslib.utilities.TextUtils.replaceInsensitiveEach(getLangValue(sender, file, path), placeholders, replacements);
 
     }
 
@@ -258,25 +351,25 @@ public final class CyberCore {
      * Gets a value from a loaded yaml file with
      * colors applied.
      *
-     * @param player Player in question
-     * @param file Name of file to get from
-     * @param path Path within file
+     * @param sender Sender to send to
+     * @param file YAML file in question
+     * @param path Path in YAML file
      * @return String within the file
      */
-    public String getLangValue(Player player, String file, String path) {
+    public String getLangValue(@Nullable CommandSender sender, @NotNull String file, @NotNull String path) {
 
-        return textUtilities.colorize(player, getLangValue(file, path));
+        return textUtilities.colorize(sender instanceof Player ? (Player) sender : null, getLangValue(file, path));
 
     }
 
     /**
      * Gets a raw value from a loaded yaml file.
      *
-     * @param file Name of file to get from
-     * @param path Path within file
+     * @param file YAML file in question
+     * @param path Path in YAML file
      * @return String within the file
      */
-    public String getLangValue(String file, String path) {
+    public String getLangValue(@NotNull String file, @NotNull String path) {
 
         return files.getConfig(file).getString(path);
 
@@ -292,7 +385,7 @@ public final class CyberCore {
      * @param pluginVersion Plugin version
      * @return True if within bounds
      */
-    public static boolean restrictVersions(int minVersion, int maxVersion, String pluginPrefix, String pluginVersion) {
+    public static boolean restrictVersions(int minVersion, int maxVersion, @NotNull String pluginPrefix, String pluginVersion) {
         if (getMajorVersion() < minVersion)
             Bukkit.getLogger().severe(pluginPrefix + " v" + pluginVersion + " does not support 1." + getMajorVersion() + ".x and older!");
         else if (getMajorVersion() > maxVersion)
