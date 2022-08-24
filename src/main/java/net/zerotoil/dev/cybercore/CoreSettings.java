@@ -1,6 +1,6 @@
 package net.zerotoil.dev.cybercore;
 
-import net.zerotoil.dev.cybercore.utilities.TextUtils;
+import net.zerotoil.dev.cybercore.utilities.GeneralUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.bukkit.ChatColor;
 
@@ -26,6 +26,7 @@ public class CoreSettings {
             "&8 \\______  / \\______  / |____|_  /",
             "&8        \\/         \\/         \\/"};
 
+
     public CoreSettings(CyberCore main) {
         this.main = main;
     }
@@ -48,7 +49,7 @@ public class CoreSettings {
         else for (String s : bootLogo) string += s + "\n";
 
         if (string.length() > 2) string = string.substring(2);
-        if (applyColor) return main.getTextUtilities().colorize(null, string);
+        if (applyColor) return main.textSettings().colorize(null, string);
         return string;
     }
 
@@ -60,10 +61,10 @@ public class CoreSettings {
         String[] string;
         if (isLegacyLogo()) {
             string = new String[legacyBootLogo.length];
-            for (int i = 0; i < legacyBootLogo.length; i++) string[i] = main.getTextUtilities().colorize(null, legacyBootLogo[i]);
+            for (int i = 0; i < legacyBootLogo.length; i++) string[i] = main.textSettings().colorize(null, legacyBootLogo[i]);
         } else {
             string = new String[bootLogo.length];
-            for (int i = 0; i < bootLogo.length; i++) string[i] = main.getTextUtilities().colorize(null, bootLogo[i]);
+            for (int i = 0; i < bootLogo.length; i++) string[i] = main.textSettings().colorize(null, bootLogo[i]);
         }
         return string;
     }
@@ -85,7 +86,7 @@ public class CoreSettings {
     }
 
     private boolean isLegacyLogo() {
-        return SystemUtils.OS_NAME.contains("Windows") && TextUtils.getJavaVersion() < 12;
+        return SystemUtils.OS_NAME.contains("Windows") && GeneralUtils.getJavaVersion() < 12;
     }
 
 }

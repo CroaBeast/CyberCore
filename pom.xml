@@ -85,9 +85,9 @@
 
         <!-- BeansLib -->
         <dependency>
-            <groupId>com.github.CroaBeast</groupId>
+            <groupId>io.github.croabeast</groupId>
             <artifactId>BeansLib</artifactId>
-            <version>2.3.11</version>
+            <version>1.2.8</version>
         </dependency>
 
         <!-- JetBrains Annotations -->

@@ -5,12 +5,12 @@ import org.bukkit.configuration.Configuration;
 
 import java.util.HashMap;
 
-public class Files {
+public class FileManager {
 
     private final CyberCore main;
     private final HashMap<String, YAMLFile> files = new HashMap<>();
 
-    public Files(CyberCore main) {
+    public FileManager(CyberCore main) {
         this.main = main;
     }
 
