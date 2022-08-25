@@ -268,7 +268,7 @@ public final class CyberCore {
         textUtilities.sendMessageList(
                 sender,
                 TextUtils.toList(files.getConfig(file).getConfigurationSection(split[0]), split.length == 2 ? split[1] : null),
-                player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders,
+                PlayerUtils.applyPlaceholderBraces(player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders),
                 player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
         );
         return true;
@@ -326,7 +326,7 @@ public final class CyberCore {
                 player,
                 file,
                 path,
-                player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders,
+                PlayerUtils.applyPlaceholderBraces(player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders),
                 player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
         );
     }
