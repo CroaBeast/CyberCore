@@ -231,15 +231,14 @@ public final class CyberCore {
      * @return true always
      */
     public boolean sendMessage(@Nullable CommandSender sender, @NotNull String messageKey, @Nullable String[] placeholders, @Nullable String... replacements) {
-        Player player = sender instanceof Player ? (Player) sender : null;
         if (placeholders != null) placeholders = Arrays.copyOf(placeholders, placeholders.length);
         if (replacements != null) replacements = Arrays.copyOf(replacements, replacements.length);
         return sendMessage(
                 sender,
                 "lang",
                 "messages." + messageKey,
-                player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders,
-                player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
+                placeholders,
+                replacements
         );
     }
 
@@ -264,9 +263,11 @@ public final class CyberCore {
         if (placeholders != null) placeholders = Arrays.copyOf(placeholders, placeholders.length);
         if (replacements != null) replacements = Arrays.copyOf(replacements, replacements.length);
 
+        String[] split = path.split("\\.", 2);
+
         textUtilities.sendMessageList(
                 sender,
-                TextUtils.toList(files.getConfig(file).getConfigurationSection(path), null),
+                TextUtils.toList(files.getConfig(file).getConfigurationSection(split[0]), split.length == 2 ? split[1] : null),
                 player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders,
                 player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
         );
