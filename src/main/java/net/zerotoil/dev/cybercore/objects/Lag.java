@@ -16,14 +16,18 @@ public class Lag implements Runnable {
     }
 
     public static double getTPS(int ticks) {
-        if (TICK_COUNT < ticks)
-            return 20.0D;
+        try {
+            if (TICK_COUNT < ticks)
+                return 20.0D;
 
-        int target = (TICK_COUNT - 1 - ticks) % TICKS.length;
-        long elapsed = System.currentTimeMillis() - TICKS[target];
+            int target = (TICK_COUNT - 1 - ticks) % TICKS.length;
+            long elapsed = System.currentTimeMillis() - TICKS[target];
 
-        double tps = ticks / (elapsed / 1000.0D);
-        return Math.min(tps, 20.0);
+            double tps = ticks / (elapsed / 1000.0D);
+            return Math.min(tps, 20.0);
+        } catch (Exception e) {
+            return 20.0;
+        }
     }
 
     public static double getNewTPS() {
