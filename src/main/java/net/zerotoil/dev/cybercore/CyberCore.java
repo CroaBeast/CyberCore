@@ -396,4 +396,8 @@ public final class CyberCore {
 
     }
 
+    public String getPreviousVersion() {
+        return files.getConfig("plugin-data").getString("version.previous", plugin.getDescription().getVersion());
+    }
+
 }
