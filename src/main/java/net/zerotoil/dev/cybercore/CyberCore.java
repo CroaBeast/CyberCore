@@ -1,7 +1,8 @@
 package net.zerotoil.dev.cybercore;
 
-import me.croabeast.beanslib.utilities.TextKeys;
-import me.croabeast.beanslib.utilities.TextUtils;
+import me.croabeast.beanslib.BeansMethods;
+import me.croabeast.beanslib.utility.LibUtils;
+import me.croabeast.beanslib.utility.TextUtils;
 import net.zerotoil.dev.cybercore.files.FileManager;
 import net.zerotoil.dev.cybercore.objects.Lag;
 import net.zerotoil.dev.cybercore.utilities.GeneralUtils;
@@ -41,7 +42,7 @@ public final class CyberCore {
      */
     public CyberCore(JavaPlugin plugin) {
         this.plugin = plugin;
-        textUtilities = new TextSettings(plugin);
+        textUtilities = new TextSettings(this);
         settings = new CoreSettings(this);
         bootStart = System.currentTimeMillis();
     }
@@ -144,7 +145,7 @@ public final class CyberCore {
      * @return Major version of the server
      */
     public static int getMajorVersion() {
-        return TextKeys.majorVersion();
+        return LibUtils.majorVersion();
     }
 
     /**
@@ -171,7 +172,7 @@ public final class CyberCore {
      * @return Fork of the server
      */
     public String getFork() {
-        return TextKeys.serverFork();
+        return LibUtils.serverFork();
     }
 
     /**
@@ -344,7 +345,7 @@ public final class CyberCore {
      */
     public String getLangValue(@Nullable CommandSender sender, @NotNull String file, @NotNull String path, @Nullable String[] placeholders, @Nullable String[] replacements) {
 
-        return me.croabeast.beanslib.utilities.TextUtils.replaceInsensitiveEach(getLangValue(sender, file, path), placeholders, replacements);
+        return TextUtils.replaceInsensitiveEach(getLangValue(sender, file, path), placeholders, replacements);
 
     }
 
@@ -359,7 +360,8 @@ public final class CyberCore {
      */
     public String getLangValue(@Nullable CommandSender sender, @NotNull String file, @NotNull String path) {
 
-        return textUtilities.colorize(sender instanceof Player ? (Player) sender : null, getLangValue(file, path));
+        final Player player = sender instanceof Player ? (Player) sender : null;
+        return BeansMethods.DEFAULTS.colorize(player, player, getLangValue(file, path));
 
     }
 

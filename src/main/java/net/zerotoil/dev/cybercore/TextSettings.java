@@ -1,11 +1,13 @@
 package net.zerotoil.dev.cybercore;
 
 import me.croabeast.beanslib.BeansLib;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public class TextSettings extends BeansLib {
 
+    private final CyberCore core;
     /*
      * You need to initialize your BeansLib class with your plugin's instance.
      */
@@ -16,13 +18,14 @@ public class TextSettings extends BeansLib {
     private boolean hardSpacing = false;
     private boolean stripPrefix = false;
 
-    public TextSettings(JavaPlugin plugin) {
-        this.plugin = plugin;
+    public TextSettings(CyberCore core) {
+        this.plugin = core.getPlugin();
+        this.core = core;
     }
 
     @Override
     @NotNull
-    protected JavaPlugin getPlugin() {
+    public JavaPlugin getPlugin() {
         return plugin;
     }
 
@@ -52,6 +55,11 @@ public class TextSettings extends BeansLib {
         return true;
     }
 
+    @Override
+    public ConfigurationSection getWebhookSection() {
+        return core.files().getConfig("lang").getConfigurationSection("webhooks");
+    }
+
     /**
      * Sets prefix.
      *
@@ -59,11 +67,6 @@ public class TextSettings extends BeansLib {
      */
     public void setPrefix(String prefix) {
         langPrefix = prefix;
-    }
-
-    @Override
-    public boolean isHardSpacing() {
-        return hardSpacing;
     }
 
     /**

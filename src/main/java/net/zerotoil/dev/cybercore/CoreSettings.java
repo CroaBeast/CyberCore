@@ -49,7 +49,7 @@ public class CoreSettings {
         else for (String s : bootLogo) string += s + "\n";
 
         if (string.length() > 2) string = string.substring(2);
-        if (applyColor) return main.textSettings().colorize(null, string);
+        if (applyColor) return main.textSettings().colorize(null, null, string);
         return string;
     }
 
@@ -61,10 +61,10 @@ public class CoreSettings {
         String[] string;
         if (isLegacyLogo()) {
             string = new String[legacyBootLogo.length];
-            for (int i = 0; i < legacyBootLogo.length; i++) string[i] = main.textSettings().colorize(null, legacyBootLogo[i]);
+            for (int i = 0; i < legacyBootLogo.length; i++) string[i] = main.textSettings().colorize(null, null, legacyBootLogo[i]);
         } else {
             string = new String[bootLogo.length];
-            for (int i = 0; i < bootLogo.length; i++) string[i] = main.textSettings().colorize(null, bootLogo[i]);
+            for (int i = 0; i < bootLogo.length; i++) string[i] = main.textSettings().colorize(null, null, bootLogo[i]);
         }
         return string;
     }
