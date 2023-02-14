@@ -1,14 +1,17 @@
 package net.zerotoil.dev.cybercore;
 
-import net.zerotoil.dev.cybercore.utilities.GeneralUtils;
-import org.apache.commons.lang.SystemUtils;
+import lombok.Getter;
+import me.croabeast.beanslib.utility.LibUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.bukkit.ChatColor;
 
 public class CoreSettings {
 
     private final CyberCore main;
 
+    @Getter
     private String bootColor = ChatColor.translateAlternateColorCodes('&', "&8");
+
     private String[] bootLogo = new String[]{
             "&8╭━━━╮&7╱╱╱&8╭╮&7╱╱╱╱╱╱&8╭━━━╮",
             "&8┃╭━╮┃&7╱╱╱&8┃┃&7╱╱╱╱╱╱&8┃╭━╮┃",
@@ -17,14 +20,17 @@ public class CoreSettings {
             "&8┃╰━╯┃╰━╯┃╰╯┃┃━┫┃┃╰━╯┃╰╯┃┃┃┃━┫",
             "&8╰━━━┻━╮╭┻━━┻━━┻╯╰━━━┻━━┻╯╰━━╯",
             "&7╱╱╱╱&8╭━╯┃ &7Author: &fKihsomray",
-            "&7╱╱╱╱&8╰━━╯ &7Version: &7"};
+            "&7╱╱╱╱&8╰━━╯ &7Version: &7"
+    };
+
     private String[] legacyBootLogo = new String[]{
             "&8_________  _________  __________",
             "&8\\_   ___ \\ \\_   ___ \\ \\______   \\",
             "&8/    \\  \\/ /    \\  \\/  |       _/",
             "&8\\     \\____\\     \\____ |    |   \\",
             "&8 \\______  / \\______  / |____|_  /",
-            "&8        \\/         \\/         \\/"};
+            "&8        \\/         \\/         \\/"
+    };
 
 
     public CoreSettings(CyberCore main) {
@@ -43,50 +49,52 @@ public class CoreSettings {
         legacyBootLogo = logo;
     }
 
-    public String getStringLogo(boolean applyColor) {
-        String string = "";
-        if (isLegacyLogo()) for (String s : legacyBootLogo) string += s + "\n";
-        else for (String s : bootLogo) string += s + "\n";
+    private boolean isLegacyLogo() {
+        return SystemUtils.OS_NAME.contains("Windows") && LibUtils.majorJavaVersion() < 12;
+    }
 
-        if (string.length() > 2) string = string.substring(2);
-        if (applyColor) return main.textSettings().colorize(null, null, string);
-        return string;
+    private String[] getLogo() {
+        return isLegacyLogo() ? legacyBootLogo : bootLogo;
+    }
+
+    public String getStringLogo(boolean applyColor) {
+        StringBuilder builder = new StringBuilder();
+
+        for (String s : getLogo()) builder.append(s).append("\n");
+
+        if (builder.length() > 2)
+            builder = new StringBuilder(builder.substring(2));
+
+        if (applyColor) return main.textSettings().colorize(null, null, builder + "");
+        return builder + "";
     }
 
     public String[] getArrayLogo(boolean applyColor) {
-        if (!applyColor) {
-            if (isLegacyLogo()) return legacyBootLogo;
-            return bootLogo;
-        }
-        String[] string;
-        if (isLegacyLogo()) {
-            string = new String[legacyBootLogo.length];
-            for (int i = 0; i < legacyBootLogo.length; i++) string[i] = main.textSettings().colorize(null, null, legacyBootLogo[i]);
-        } else {
-            string = new String[bootLogo.length];
-            for (int i = 0; i < bootLogo.length; i++) string[i] = main.textSettings().colorize(null, null, bootLogo[i]);
-        }
+        if (!applyColor) return getLogo();
+
+        String[] string = new String[getLogo().length];
+
+        for (int i = 0; i < getLogo().length; i++)
+            string[i] = main.textSettings().colorize(null, null, getLogo()[i]);
+
         return string;
     }
 
     public String getBootBar() {
-        String string = "&8-----------------------------------------------";
-        if (!isLegacyLogo()) string = bootColor + "―――――――――――――――――――――――――――――――――――――――――――――――";
-        return string;
-    }
+        StringBuilder builder = new StringBuilder();
 
-    public String getBootColor() {
-        return bootColor;
+        for (int i = 0; i < 48; i++) {
+            if (i == 0 && !isLegacyLogo()) builder.append(getBootColor());
+            builder.append(isLegacyLogo() ? "-" : "―");
+        }
+
+        return builder + "";
     }
 
     public void sendBootHeader() {
         main.logger(getBootBar());
         main.logger(getArrayLogo(true));
         main.logger(getBootBar(), "");
-    }
-
-    private boolean isLegacyLogo() {
-        return SystemUtils.OS_NAME.contains("Windows") && GeneralUtils.getJavaVersion() < 12;
     }
 
 }

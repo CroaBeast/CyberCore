@@ -1,11 +1,9 @@
 package net.zerotoil.dev.cybercore;
 
-import me.croabeast.beanslib.BeansMethods;
 import me.croabeast.beanslib.utility.LibUtils;
 import me.croabeast.beanslib.utility.TextUtils;
 import net.zerotoil.dev.cybercore.files.FileManager;
 import net.zerotoil.dev.cybercore.objects.Lag;
-import net.zerotoil.dev.cybercore.utilities.GeneralUtils;
 import net.zerotoil.dev.cybercore.utilities.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -154,7 +152,7 @@ public final class CyberCore {
      * @return Full version of the server
      */
     public static String getServerVersion() {
-        return Bukkit.getBukkitVersion().split("-")[0];
+        return getFork().split(" ")[1];
     }
 
     /**
@@ -171,7 +169,7 @@ public final class CyberCore {
      *
      * @return Fork of the server
      */
-    public String getFork() {
+    public static String getFork() {
         return LibUtils.serverFork();
     }
 
@@ -199,7 +197,7 @@ public final class CyberCore {
      * @return Author(s) of the plugin
      */
     public String getAuthors() {
-        return plugin.getDescription().getAuthors().toString().replace("[", "").replace("]", "");
+        return (plugin.getDescription().getAuthors() + "").replace("[", "").replace("]", "");
     }
 
     /**
@@ -269,8 +267,8 @@ public final class CyberCore {
         textUtilities.sendMessageList(
                 sender,
                 TextUtils.toList(files.getConfig(file).getConfigurationSection(split[0]), split.length == 2 ? split[1] : null),
-                PlayerUtils.applyPlaceholderBraces(player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders),
-                player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
+                PlayerUtils.applyPlaceholderBraces(player != null ? TextUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders),
+                player != null ? TextUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
         );
         return true;
     }
@@ -327,8 +325,8 @@ public final class CyberCore {
                 player,
                 file,
                 path,
-                PlayerUtils.applyPlaceholderBraces(player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders),
-                player != null ? GeneralUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
+                PlayerUtils.applyPlaceholderBraces(player != null ? TextUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders),
+                player != null ? TextUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
         );
     }
 
@@ -344,9 +342,7 @@ public final class CyberCore {
      * @return String within the file
      */
     public String getLangValue(@Nullable CommandSender sender, @NotNull String file, @NotNull String path, @Nullable String[] placeholders, @Nullable String[] replacements) {
-
         return TextUtils.replaceInsensitiveEach(getLangValue(sender, file, path), placeholders, replacements);
-
     }
 
     /**
@@ -361,7 +357,7 @@ public final class CyberCore {
     public String getLangValue(@Nullable CommandSender sender, @NotNull String file, @NotNull String path) {
 
         final Player player = sender instanceof Player ? (Player) sender : null;
-        return BeansMethods.DEFAULTS.colorize(player, player, getLangValue(file, path));
+        return textUtilities.colorize(player, player, getLangValue(file, path));
 
     }
 
@@ -373,9 +369,7 @@ public final class CyberCore {
      * @return String within the file
      */
     public String getLangValue(@NotNull String file, @NotNull String path) {
-
         return files.getConfig(file).getString(path);
-
     }
 
     /**
