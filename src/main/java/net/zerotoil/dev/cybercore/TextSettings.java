@@ -21,4 +21,24 @@ public class TextSettings extends BeansLib {
     public ConfigurationSection getWebhookSection() {
         return core.files().getConfig("lang").getConfigurationSection("webhooks");
     }
+
+    @Deprecated
+    public TextSettings setPrefix(String prefix) {
+        return (TextSettings) setLangPrefix(prefix);
+    }
+
+    @Deprecated
+    public TextSettings setPrefixKey(String key) {
+        return (TextSettings) setLangPrefixKey(key);
+    }
+
+    @Deprecated
+    public String langPrefix() {
+        return getLangPrefix();
+    }
+
+    @Deprecated
+    public String langPrefixKey() {
+        return getLangPrefixKey();
+    }
 }
