@@ -14,6 +14,32 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GeneralUtils {
 
     /**
+     * Combines two arrays into a new array of the same type.
+     *
+     * @author Kihsomray
+     * @since 1.3
+     *
+     * @param array First array
+     * @param additionalArrays Any additional arrays
+     * @param <T> Type of array (must be same)
+     * @return New array of combined values
+     */
+    @Deprecated
+    public static <T> T[] combineArrays(@NotNull T[] array, @Nullable T[]... additionalArrays) {
+        if (additionalArrays == null) return Arrays.copyOf(array, array.length);
+        List<T> resultList = new ArrayList<>();
+        Collections.addAll(resultList, array);
+        for (T[] a : additionalArrays) {
+            if (a == null) continue;
+            Collections.addAll(resultList, a);
+        }
+        @SuppressWarnings("unchecked")
+        //the type cast is safe as the array1 has the type T[]
+        T[] resultArray = (T[]) Array.newInstance(array.getClass().getComponentType(), 0);
+        return resultList.toArray(resultArray);
+    }
+
+    /**
      * Gets a random double.
      *
      * @return Randomly generated double
