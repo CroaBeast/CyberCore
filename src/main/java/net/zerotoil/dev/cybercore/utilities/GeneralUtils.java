@@ -1,6 +1,7 @@
 package net.zerotoil.dev.cybercore.utilities;
 
 import me.croabeast.beanslib.utility.LibUtils;
+import me.croabeast.beanslib.utility.TextUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,18 +26,9 @@ public class GeneralUtils {
      * @return New array of combined values
      */
     @Deprecated
+    @SafeVarargs
     public static <T> T[] combineArrays(@NotNull T[] array, @Nullable T[]... additionalArrays) {
-        if (additionalArrays == null) return Arrays.copyOf(array, array.length);
-        List<T> resultList = new ArrayList<>();
-        Collections.addAll(resultList, array);
-        for (T[] a : additionalArrays) {
-            if (a == null) continue;
-            Collections.addAll(resultList, a);
-        }
-        @SuppressWarnings("unchecked")
-        //the type cast is safe as the array1 has the type T[]
-        T[] resultArray = (T[]) Array.newInstance(array.getClass().getComponentType(), 0);
-        return resultList.toArray(resultArray);
+        return TextUtils.combineArrays(array, additionalArrays);
     }
 
     /**
