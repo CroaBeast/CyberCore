@@ -197,7 +197,7 @@ public final class CyberCore {
      * @return Author(s) of the plugin
      */
     public String getAuthors() {
-        return (plugin.getDescription().getAuthors() + "").replace("[", "").replace("]", "");
+        return plugin.getDescription().getAuthors().toString().replace("[", "").replace("]", "");
     }
 
     /**

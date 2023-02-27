@@ -2,8 +2,6 @@ package net.zerotoil.dev.cybercore;
 
 import me.croabeast.beanslib.BeansLib;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 public class TextSettings extends BeansLib {
 
