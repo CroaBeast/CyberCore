@@ -30,7 +30,7 @@ public class FileManager {
 
         for (String string : fileNames) addFile(string, sendMessages);
 
-        if (sendMessages) main.logger("&7Loaded &e" + files.size() + "&7 files in &a" + (System.currentTimeMillis() - startTime) + "ms&7.", "");
+        if (sendMessages) main.logger("&7Loaded &e" + files.size() + "&7 files in &a" + (System.currentTimeMillis() - startTime) + "ms&7.", "&7");
     }
 
     public void addFile(String file, boolean sendMessages) {

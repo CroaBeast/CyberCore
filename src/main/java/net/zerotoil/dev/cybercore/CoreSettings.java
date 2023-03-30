@@ -65,8 +65,8 @@ public class CoreSettings {
         if (builder.length() > 2)
             builder = new StringBuilder(builder.substring(2));
 
-        if (applyColor) return main.textSettings().colorize(null, null, builder + "");
-        return builder + "";
+        if (applyColor) return main.textSettings().colorize(null, null, builder.toString());
+        return builder.toString();
     }
 
     public String[] getArrayLogo(boolean applyColor) {
@@ -94,7 +94,7 @@ public class CoreSettings {
     public void sendBootHeader() {
         main.logger(getBootBar());
         main.logger(getArrayLogo(true));
-        main.logger(getBootBar(), "");
+        main.logger(getBootBar(), "&7");
     }
 
 }
