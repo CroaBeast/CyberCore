@@ -1,5 +1,6 @@
 package net.zerotoil.dev.cybercore.utilities;
 
+import me.croabeast.beanslib.Beans;
 import me.croabeast.beanslib.BeansLib;
 
 /**
@@ -23,7 +24,7 @@ public class TimeUtils {
     private static char endDelimiter = ')';
 
     private static String colorize(String input) {
-        return BeansLib.getLoadedInstance().colorize(null, null, input);
+        return Beans.colorize(input);
     }
 
     /**
