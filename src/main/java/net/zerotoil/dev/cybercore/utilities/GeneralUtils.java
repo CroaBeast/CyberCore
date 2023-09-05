@@ -1,5 +1,6 @@
 package net.zerotoil.dev.cybercore.utilities;
 
+import me.croabeast.beanslib.utility.ArrayUtils;
 import me.croabeast.beanslib.utility.LibUtils;
 import me.croabeast.beanslib.utility.TextUtils;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +29,7 @@ public class GeneralUtils {
     @Deprecated
     @SafeVarargs
     public static <T> T[] combineArrays(@NotNull T[] array, @Nullable T[]... additionalArrays) {
-        return TextUtils.combineArrays(array, additionalArrays);
+        return ArrayUtils.combineArrays(array, additionalArrays);
     }
 
     /**

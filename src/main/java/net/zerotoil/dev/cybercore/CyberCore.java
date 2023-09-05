@@ -1,5 +1,6 @@
 package net.zerotoil.dev.cybercore;
 
+import me.croabeast.beanslib.utility.ArrayUtils;
 import me.croabeast.beanslib.utility.LibUtils;
 import me.croabeast.beanslib.utility.TextUtils;
 import net.zerotoil.dev.cybercore.files.FileManager;
@@ -267,8 +268,8 @@ public final class CyberCore {
         textUtilities.sendMessageList(
                 sender,
                 TextUtils.toList(files.getConfig(file).getConfigurationSection(split[0]), split.length == 2 ? split[1] : null),
-                PlayerUtils.applyPlaceholderBraces(player != null ? TextUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders),
-                player != null ? TextUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
+                PlayerUtils.applyPlaceholderBraces(player != null ? ArrayUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders),
+                player != null ? ArrayUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
         );
         return true;
     }
@@ -325,8 +326,8 @@ public final class CyberCore {
                 player,
                 file,
                 path,
-                PlayerUtils.applyPlaceholderBraces(player != null ? TextUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders),
-                player != null ? TextUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
+                PlayerUtils.applyPlaceholderBraces(player != null ? ArrayUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders),
+                player != null ? ArrayUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
         );
     }
 
@@ -342,7 +343,7 @@ public final class CyberCore {
      * @return String within the file
      */
     public String getLangValue(@Nullable CommandSender sender, @NotNull String file, @NotNull String path, @Nullable String[] placeholders, @Nullable String[] replacements) {
-        return TextUtils.replaceInsensitiveEach(getLangValue(sender, file, path), placeholders, replacements);
+        return TextUtils.replaceInsensitiveEach(placeholders, replacements, getLangValue(sender, file, path));
     }
 
     /**
