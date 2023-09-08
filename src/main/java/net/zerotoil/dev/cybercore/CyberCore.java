@@ -18,7 +18,7 @@ import java.util.Arrays;
 public final class CyberCore {
 
     private final JavaPlugin plugin;
-    private final TextSettings textUtilities;
+    private TextSettings textUtilities;
     private final CoreSettings settings;
 
     private final long bootStart;
@@ -100,6 +100,13 @@ public final class CyberCore {
                 plugin.getDescription().getVersion() + "&7 in &a" +
                 (System.currentTimeMillis() - bootStart) + "ms&7.");
         logger(settings.getBootBar());
+    }
+
+    /**
+     * Reloads BeansLib in the background.
+     */
+    public void reload() {
+        textUtilities = new TextSettings(this);
     }
 
     /**
