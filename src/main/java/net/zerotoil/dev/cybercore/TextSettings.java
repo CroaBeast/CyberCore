@@ -1,6 +1,7 @@
 package net.zerotoil.dev.cybercore;
 
 import me.croabeast.beanslib.BeansLib;
+import net.zerotoil.dev.cybercore.files.YAMLFile;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class TextSettings extends BeansLib {
@@ -13,16 +14,9 @@ public class TextSettings extends BeansLib {
 
         setLangPrefixKey("{p}").setLangPrefix("&8&lCCR &8» &r");
         setColoredConsole(true);
-    }
+        setColoredConsole(new YAMLFile(core, core.getPlugin(), "config.yml").getConfig().getBoolean("config.console-color", true));
+        setWebhookSection(new YAMLFile(core, core.getPlugin(), "lang.yml").getConfig().getConfigurationSection("webhooks"));
 
-    @Override
-    public ConfigurationSection getWebhookSection() {
-        return core.files().getConfig("lang").getConfigurationSection("webhooks");
-    }
-
-    @Override
-    public boolean isColoredConsole() {
-        return core.files().getConfig("config").getBoolean("config.console-color", true);
     }
 
     @Deprecated
