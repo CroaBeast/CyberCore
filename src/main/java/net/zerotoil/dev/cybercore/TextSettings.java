@@ -20,6 +20,11 @@ public class TextSettings extends BeansLib {
         return core.files().getConfig("lang").getConfigurationSection("webhooks");
     }
 
+    @Override
+    public boolean isColoredConsole() {
+        return core.files().getConfig("config").getBoolean("config.console-color", true);
+    }
+
     @Deprecated
     public TextSettings setPrefix(String prefix) {
         return (TextSettings) setLangPrefix(prefix);
