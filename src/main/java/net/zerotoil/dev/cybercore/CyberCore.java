@@ -1,5 +1,8 @@
 package net.zerotoil.dev.cybercore;
 
+import me.croabeast.beanslib.Beans;
+import me.croabeast.beanslib.key.ValueReplacer;
+import me.croabeast.beanslib.message.MessageSender;
 import me.croabeast.beanslib.utility.ArrayUtils;
 import me.croabeast.beanslib.utility.LibUtils;
 import me.croabeast.beanslib.utility.TextUtils;
@@ -150,8 +153,18 @@ public final class CyberCore {
      *
      * @return Major version of the server
      */
+    @Deprecated
     public static int getMajorVersion() {
-        return LibUtils.majorVersion();
+        return (int) getMainVersion();
+    }
+
+    /**
+     * Gets the major version of the server.
+     *
+     * @return Major version of the server
+     */
+    public static double getMainVersion() {
+        return LibUtils.getMainVersion();
     }
 
     /**
@@ -266,18 +279,19 @@ public final class CyberCore {
      * @return true always
      */
     public boolean sendMessage(@Nullable CommandSender sender, @NotNull String file, @NotNull String path, @Nullable String[] placeholders, @Nullable String... replacements) {
-        Player player = sender instanceof Player ? (Player) sender : null;
         if (placeholders != null) placeholders = Arrays.copyOf(placeholders, placeholders.length);
         if (replacements != null) replacements = Arrays.copyOf(replacements, replacements.length);
 
         String[] split = path.split("\\.", 2);
 
-        textUtilities.sendMessageList(
-                sender,
-                TextUtils.toList(files.getConfig(file).getConfigurationSection(split[0]), split.length == 2 ? split[1] : null),
-                PlayerUtils.applyPlaceholderBraces(player != null ? ArrayUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders),
-                player != null ? ArrayUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
-        );
+        new MessageSender().
+                setTargets(sender).
+                setKeys(placeholders).
+                setValues(replacements).
+                setLogger(false).
+                setCaseSensitive(false).
+                send(TextUtils.toList(files.getConfig(file).getConfigurationSection(split[0]), split.length == 2 ? split[1] : null));
+
         return true;
     }
 
@@ -350,7 +364,7 @@ public final class CyberCore {
      * @return String within the file
      */
     public String getLangValue(@Nullable CommandSender sender, @NotNull String file, @NotNull String path, @Nullable String[] placeholders, @Nullable String[] replacements) {
-        return TextUtils.replaceInsensitiveEach(placeholders, replacements, getLangValue(sender, file, path));
+        return ValueReplacer.forEach(placeholders, replacements, getLangValue(sender, file, path));
     }
 
     /**
