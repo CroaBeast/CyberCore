@@ -3,6 +3,7 @@ package net.zerotoil.dev.cybercore;
 import me.croabeast.beanslib.Beans;
 import me.croabeast.beanslib.key.ValueReplacer;
 import me.croabeast.beanslib.message.MessageSender;
+import me.croabeast.beanslib.misc.BeansLogger;
 import me.croabeast.beanslib.utility.ArrayUtils;
 import me.croabeast.beanslib.utility.LibUtils;
 import me.croabeast.beanslib.utility.TextUtils;
@@ -251,8 +252,6 @@ public final class CyberCore {
      * @return true always
      */
     public boolean sendMessage(@Nullable CommandSender sender, @NotNull String messageKey, @Nullable String[] placeholders, @Nullable String... replacements) {
-        if (placeholders != null) placeholders = Arrays.copyOf(placeholders, placeholders.length);
-        if (replacements != null) replacements = Arrays.copyOf(replacements, replacements.length);
         return sendMessage(
                 sender,
                 "lang",
@@ -284,13 +283,17 @@ public final class CyberCore {
 
         String[] split = path.split("\\.", 2);
 
-        new MessageSender().
-                setTargets(sender).
-                setKeys(placeholders).
-                setValues(replacements).
-                setLogger(false).
-                setCaseSensitive(false).
-                send(TextUtils.toList(files.getConfig(file).getConfigurationSection(split[0]), split.length == 2 ? split[1] : null));
+        try {
+            new MessageSender().
+                    setTargets(sender).
+                    setKeys(PlayerUtils.applyPlaceholderBraces(placeholders)).
+                    setValues(replacements).
+                    setLogger(false).
+                    setCaseSensitive(false).
+                    send(TextUtils.toList(files.getConfig(file).getConfigurationSection(split[0]), split.length == 2 ? split[1] : null));
+        } catch (final Exception e) {
+            Beans.doLog("Something went wrong sending the message: " + path);
+        }
 
         return true;
     }
@@ -342,13 +345,12 @@ public final class CyberCore {
      * @return Message from lang
      */
     public String getMessage(@Nullable CommandSender sender, @NotNull String file, @NotNull String path, @Nullable String[] placeholders, @Nullable String... replacements) {
-        Player player = sender instanceof Player ? (Player) sender : null;
         return getLangValue(
-                player,
+                sender,
                 file,
                 path,
-                PlayerUtils.applyPlaceholderBraces(player != null ? ArrayUtils.combineArrays(PlayerUtils.getPlPlaceholders(), placeholders) : placeholders),
-                player != null ? ArrayUtils.combineArrays(PlayerUtils.getPlReplacements(player), replacements) : replacements
+                PlayerUtils.applyPlaceholderBraces(placeholders),
+                replacements
         );
     }
 
