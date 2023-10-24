@@ -283,8 +283,29 @@ public final class CyberCore {
 
         String[] split = path.split("\\.", 2);
 
+        return sendMessage(sender, TextUtils.toList(files.getConfig(file).getConfigurationSection(split[0]), split.length == 2 ? split[1] : null), placeholders, replacements);
+    }
+
+    /**
+     * Send a message to a player or console
+     * if the player is null. The player's
+     * placeholders and chat colors will be
+     * applied in the process.
+     *
+     * Additional placeholders may be parsed
+     * if included in the placeholders field.
+     *
+     * @param sender Sender to send to
+     * @param placeholders Array of placeholders
+     * @param replacements Array of replacements for placeholders
+     * @return true always
+     */
+    public boolean sendMessage(@Nullable CommandSender sender, @NotNull List<String> messageList, @Nullable String[] placeholders, @Nullable String... replacements) {
+        if (placeholders != null) placeholders = Arrays.copyOf(placeholders, placeholders.length);
+        if (replacements != null) replacements = Arrays.copyOf(replacements, replacements.length);
+
         // Replace all actionbar placeholders with the correct ones
-        final List<String> stringList = TextUtils.toList(files.getConfig(file).getConfigurationSection(split[0]), split.length == 2 ? split[1] : null)
+        final List<String> stringList = messageList
                 .stream()
                 .map(s -> s.replaceAll("(?i)\\[actionbar\\]", "action-bar"))
                 .collect(Collectors.toList());
@@ -298,7 +319,7 @@ public final class CyberCore {
                     .setCaseSensitive(false)
                     .send(stringList);
         } catch (final Exception e) {
-            Beans.doLog("Something went wrong sending the message: " + path);
+            Beans.doLog("Something went wrong sending the message: " + messageList);
         }
 
         return true;
