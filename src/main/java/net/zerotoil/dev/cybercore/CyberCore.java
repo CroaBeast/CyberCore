@@ -16,6 +16,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public final class CyberCore {
 
@@ -281,14 +283,20 @@ public final class CyberCore {
 
         String[] split = path.split("\\.", 2);
 
+        // Replace all actionbar placeholders with the correct ones
+        final List<String> stringList = TextUtils.toList(files.getConfig(file).getConfigurationSection(split[0]), split.length == 2 ? split[1] : null)
+                .stream()
+                .map(s -> s.replaceAll("(?i)\\[actionbar\\]", "action-bar"))
+                .collect(Collectors.toList());
+
         try {
-            new MessageSender().
-                    setTargets(sender).
-                    setKeys(PlayerUtils.applyPlaceholderBraces(placeholders)).
-                    setValues(replacements).
-                    setLogger(false).
-                    setCaseSensitive(false).
-                    send(TextUtils.toList(files.getConfig(file).getConfigurationSection(split[0]), split.length == 2 ? split[1] : null));
+            new MessageSender()
+                    .setTargets(sender)
+                    .setKeys(PlayerUtils.applyPlaceholderBraces(placeholders))
+                    .setValues(replacements)
+                    .setLogger(false)
+                    .setCaseSensitive(false)
+                    .send(stringList);
         } catch (final Exception e) {
             Beans.doLog("Something went wrong sending the message: " + path);
         }
