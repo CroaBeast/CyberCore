@@ -307,7 +307,7 @@ public final class CyberCore {
         // Replace all actionbar placeholders with the correct ones
         final List<String> stringList = messageList
                 .stream()
-                .map(s -> s.replaceAll("(?i)\\[actionbar\\]", "action-bar"))
+                .map(s -> s.replaceAll("(?i)\\[actionbar\\]", "[action-bar]"))
                 .collect(Collectors.toList());
 
         try {
