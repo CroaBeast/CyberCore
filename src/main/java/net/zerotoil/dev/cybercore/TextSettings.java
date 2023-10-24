@@ -13,9 +13,9 @@ public class TextSettings extends BeansLib {
         this.core = core;
 
         setLangPrefixKey("{p}").setLangPrefix("&8&lCCR &8» &r");
+
         setColoredConsole(new YAMLFile(core, core.getPlugin(), "config.yml").getConfig().getBoolean("config.console-color", true));
         setWebhookSection(new YAMLFile(core, core.getPlugin(), "lang.yml").getConfig().getConfigurationSection("webhooks"));
-
     }
 
     @Deprecated

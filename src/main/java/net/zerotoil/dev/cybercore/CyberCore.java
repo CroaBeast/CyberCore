@@ -307,17 +307,17 @@ public final class CyberCore {
         // Replace all actionbar placeholders with the correct ones
         final List<String> stringList = messageList
                 .stream()
-                .map(s -> s.replaceAll("(?i)\\[actionbar\\]", "[action-bar]"))
+                .map(s -> s.replaceAll("(?i)\\[actionbar]", "[action-bar]"))
                 .collect(Collectors.toList());
 
         try {
-            new MessageSender()
-                    .setTargets(sender)
-                    .setKeys(PlayerUtils.applyPlaceholderBraces(placeholders))
-                    .setValues(replacements)
-                    .setLogger(false)
-                    .setCaseSensitive(false)
-                    .send(stringList);
+            MessageSender ms = new MessageSender().setTargets(sender);
+
+            String[] keys = PlayerUtils.applyPlaceholderBraces(placeholders);
+            if (keys != null)
+                ms.addKeysValues(keys, replacements);
+
+            ms.setLogger(false).setCaseSensitive(false).send(stringList);
         } catch (final Exception e) {
             Beans.doLog("Something went wrong sending the message: " + messageList);
         }
