@@ -281,9 +281,16 @@ public final class CyberCore {
         if (placeholders != null) placeholders = Arrays.copyOf(placeholders, placeholders.length);
         if (replacements != null) replacements = Arrays.copyOf(replacements, replacements.length);
 
-        String[] split = path.split("\\.", 2);
+        // Split path into file and path
+        final String[] split = path.split("\\.", 2);
 
-        return sendMessage(sender, TextUtils.toList(files.getConfig(file).getConfigurationSection(split[0]), split.length == 2 ? split[1] : null), placeholders, replacements);
+        // Overloaded method
+        return sendMessage(
+                sender,
+                TextUtils.toList(files.getConfig(file).getConfigurationSection(split[0]), split.length == 2 ? split[1] : null),
+                placeholders,
+                replacements
+        );
     }
 
     /**
@@ -311,14 +318,22 @@ public final class CyberCore {
                 .collect(Collectors.toList());
 
         try {
-            MessageSender ms = new MessageSender().setTargets(sender);
 
-            String[] keys = PlayerUtils.applyPlaceholderBraces(placeholders);
-            if (keys != null)
-                ms.addKeysValues(keys, replacements);
+            // Message sender
+            final MessageSender ms = new MessageSender().setTargets(sender);
 
+            // Placeholders and replacements
+            final String[] keys = PlayerUtils.applyPlaceholderBraces(placeholders);
+
+            // Add all keys and values
+            if (keys != null && keys.length > 0) ms.addKeysValues(keys, replacements);
+
+            // Send the message
             ms.setLogger(false).setCaseSensitive(false).send(stringList);
+
         } catch (final Exception e) {
+
+            // Log the error
             Beans.doLog("Something went wrong sending the message: " + messageList);
         }
 
