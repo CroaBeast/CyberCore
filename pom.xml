@@ -66,6 +66,13 @@
                 </executions>
 
                 <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>me.croabeast</pattern>
+                            <shadedPattern>com.bitaspire</shadedPattern>
+                        </relocation>
+                    </relocations>
+
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
